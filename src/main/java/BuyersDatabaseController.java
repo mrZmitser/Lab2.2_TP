@@ -1,8 +1,5 @@
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.Properties;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class BuyersDatabaseController {
     private Connection dbConnection;
