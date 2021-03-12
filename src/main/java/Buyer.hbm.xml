@@ -1,0 +1,28 @@
+<hibernate-mapping>
+    <class name="Buyer" table="buyers">
+        <id column="id" name="id" type="java.lang.Long">
+            <generator class="increment"/>
+        </id>
+        <property column="surname" name="surname" type="java.lang.String"/>
+        <property column="name" name="name" type="java.lang.String"/>
+        <property column="patronymic" name="patronymic" type="java.lang.String"/>
+        <property column="gender" name="gender" type="java.lang.String"/>
+        <property column="nation" name="nation" type="java.lang.String"/>
+        <property column="height" name="height" type="java.lang.Integer"/>
+        <property column="weight" name="weight" type="java.lang.Integer"/>
+        <property column="birthday" name="birthday" type="java.sql.Date"/>
+        <property column="phone_number" name="phone_number" type="java.lang.String"/>
+        <property column="post_code" name="post_code" type="java.lang.String"/>
+        <property column="country" name="country" type="java.lang.String"/>
+        <property column="region" name="region" type="java.lang.String"/>
+        <property column="district" name="district" type="java.lang.String"/>
+        <property column="city" name="city" type="java.lang.String"/>
+        <property column="street" name="street" type="java.lang.String"/>
+        <property column="building" name="building" type="java.lang.String"/>
+        <property column="flat" name="flat" type="java.lang.Integer"/>
+        <property column="credit_card" name="credit_card" type="java.lang.String"/>
+        <property column="bank_account" name="bank_account" type="java.lang.String"/>
+        <property column="shop_id" name="shop_id" type="java.lang.Long"/>
+
+    </class>
+</hibernate-mapping>
