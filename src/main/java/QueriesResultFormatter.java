@@ -19,7 +19,7 @@ public class QueriesResultFormatter {
         ArrayList<String> strings = new ArrayList<>();
         var header = getHeader(result);
         strings.add(header);
-        strings.add(fillingString( header.length()));
+        strings.add(fillingString(header.length()));
         while (result.next()) {
             strings.add(resultRowToString(result));
         }
@@ -48,4 +48,13 @@ public class QueriesResultFormatter {
         return row.toString();
     }
 
+    public String intArrayToString(int[] shopIds) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("(").append(shopIds[0]);
+        for (int  i = 1; i < shopIds.length; ++i){
+            builder.append(", ").append(shopIds[i]);
+        }
+        builder.append(")");
+        return builder.toString();
+    }
 }
