@@ -1,10 +1,18 @@
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
-
+@Entity
+@Table(name = "shop")
 public class Shop {
+    @Id
+    @GeneratedValue
+    @Column(name = "id")
     private Long id;
+    @Column(name = "shop_name", length = 30, nullable = false)
     private String shop_name;
+    @Column(name = "shop_description")
     private String shop_description;
+    @OneToMany(targetEntity=Buyer.class)
     private Set buyers = new HashSet();
 
     public Shop() {
@@ -34,6 +42,7 @@ public class Shop {
         this.shop_description = shop_description;
     }
 
+    @OneToMany(mappedBy="id")
     public Set getBuyers() {
         return buyers;
     }

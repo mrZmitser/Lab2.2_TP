@@ -5,29 +5,53 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "buyers")
 public class Buyer {
     @Id
+    @GeneratedValue
+    @Column(name = "id")
     private Long id;
+    @Column(name = "surname", length = 30, nullable = false)
     private String surname;
+    @Column(name = "name", length = 30, nullable = false)
     private String name;
+    @Column(name = "patronymic", length = 30)
     private String patronymic;
+    @Column(name = "gender", length = 10, nullable = false)
     private String gender;
+    @Column(name = "nation", length = 30, nullable = false)
     private String nation;
+    @Column(name = "height", nullable = false)
     private Integer height;
+    @Column(name = "weight", nullable = false)
     private Integer weight;
+    @Column(name = "birthday", nullable = false)
     private Date birthday;
+    @Column(name = "phone_number", length = 15, nullable = false)
     private String phone_number;
+    @Column(name = "post_code", length = 10, nullable = false)
     private String post_code;
+    @Column(name = "country", length = 30, nullable = false)
     private String country;
+    @Column(name = "region", length = 30)
     private String region;
+    @Column(name = "district", length = 30)
     private String district;
+    @Column(name = "city", length = 30, nullable = false)
     private String city;
+    @Column(name = "street", length = 30, nullable = false)
     private String street;
+    @Column(name = "building", length = 10, nullable = false)
     private String building;
+    @Column(name = "flat")
     private Integer flat;
+    @Column(name = "credit_card", length = 16)
     private String credit_card;
+    @Column(name = "bank_account", length = 34)
     private String bank_account;
-    private Long shop_id;
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="shop_id")
+    private Shop shop;
 
     public Buyer() {
     }
@@ -192,12 +216,39 @@ public class Buyer {
         this.bank_account = bank_account;
     }
 
-    public Long getShops() {
-        return shop_id;
+    public Shop getShop() {
+        return shop;
     }
 
-    public void setShops(Long shop_id) {
-        this.shop_id = shop_id;
+    public void setShops(Shop shop) {
+        this.shop = shop;
+    }
+
+    @Override
+    public String toString() {
+        return "Buyer{" +
+                "id=" + id +
+                ", surname='" + surname + '\'' +
+                ", name='" + name + '\'' +
+                ", patronymic='" + patronymic + '\'' +
+                ", gender='" + gender + '\'' +
+                ", nation='" + nation + '\'' +
+                ", height=" + height +
+                ", weight=" + weight +
+                ", birthday=" + birthday +
+                ", phone_number='" + phone_number + '\'' +
+                ", post_code='" + post_code + '\'' +
+                ", country='" + country + '\'' +
+                ", region='" + region + '\'' +
+                ", district='" + district + '\'' +
+                ", city='" + city + '\'' +
+                ", street='" + street + '\'' +
+                ", building='" + building + '\'' +
+                ", flat=" + flat +
+                ", credit_card='" + credit_card + '\'' +
+                ", bank_account='" + bank_account + '\'' +
+                ", shop=" + shop +
+                '}';
     }
 }
 

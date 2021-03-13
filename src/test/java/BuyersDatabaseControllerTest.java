@@ -1,4 +1,4 @@
-import org.flywaydb.core.Flyway;
+/*import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -168,4 +168,4 @@ class BuyersDatabaseControllerTest {
         }
         System.out.println(formatter.fillingString(255));
     }
-}
+}*/

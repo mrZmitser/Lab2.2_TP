@@ -11,8 +11,8 @@
     <property name="hibernate.connection.password">password</property>
     <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/postgres</property>
 
-    <mapping resource="Shop.hbm.xml"/>
-    <mapping resource="Buyer.hbm.xml"/>
+    <mapping class="Buyer"/>
+    <mapping class="Shop"/>
 
 </session-factory>
 </hibernate-configuration>
