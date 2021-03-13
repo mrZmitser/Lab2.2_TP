@@ -50,18 +50,18 @@ public class BuyersDatabaseController {
         return formatter.resultToStringArray(getResult(sql));
     }
 
-    public String[] addShopIdColumn() throws SQLException {
+    public void addShopIdColumn() throws SQLException {
         var sql = "ALTER TABLE buyers ADD shop INT DEFAULT(1) NOT NULL";
-        return formatter.resultToStringArray(getResult(sql));
+        dbConnection.prepareStatement(sql).executeUpdate();
     }
 
-    public String[] customQuery(String sql) throws SQLException {
-        return formatter.resultToStringArray(getResult(sql));
+    public void customUpdateQuery(String sql) throws SQLException {
+        dbConnection.prepareStatement(sql).executeUpdate();
     }
 
-    public String[] connectBuyersShops() throws SQLException {
+    public void connectBuyersShops() throws SQLException {
         var sql = "ALTER TABLE buyers ADD CONSTRAINT shop FOREIGN KEY (shop) REFERENCES shop(id)";
-        return formatter.resultToStringArray(getResult(sql));
+        dbConnection.prepareStatement(sql).executeUpdate();
     }
 
 
