@@ -107,14 +107,15 @@ class BuyersDatabaseControllerTest {
         System.out.println(formatter.fillingString(255));
     }
 
-    @Test
+
     void addShopIdColumn() {
         BuyersDatabaseController dbController = connect();
         var formatter = new QueriesResultFormatter(16, "|", '*');
 
-        System.out.println("Add Shop column");
+        System.out.println("Add data.Shop column");
         try {
-            printStrings(dbController.addShopIdColumn());
+            dbController.addShopIdColumn();
+            printStrings(dbController.getFullTable());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -122,6 +123,11 @@ class BuyersDatabaseControllerTest {
     }
 
     @Test
+    void createAndConnectShop(){
+        addShopIdColumn();
+        connectBuyersShops();
+    }
+
     void connectBuyersShops() {
         BuyersDatabaseController dbController = connect();
         var formatter = new QueriesResultFormatter(16, "|", '*');
@@ -132,8 +138,8 @@ class BuyersDatabaseControllerTest {
                 UPDATE buyers SET shop=4 WHERE id IN (3, 4);
                 """;
         try {
+            dbController.customUpdateQuery(updatingSql);
             dbController.connectBuyersShops();
-            dbController.customQuery(updatingSql);
             printStrings(dbController.getFullTable());
         } catch (SQLException e) {
             e.printStackTrace();

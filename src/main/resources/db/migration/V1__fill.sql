@@ -43,3 +43,15 @@ INSERT INTO buyers (surname, name, patronymic, gender, nation, height, weight,
          (TO_DATE('10.12.1999', 'DD.MM.YYYY')), '480291976500', '220137', 'Ukraine', 'Kyiv', 'Kyiv', 
          'Kyiv', 'вул. Аеродромна', '14/2', 1, '1234432187650987', '12345680');
 		 
+CREATE TABLE shop (
+  id SERIAL PRIMARY KEY,
+  shop_name VARCHAR(30),
+  shop_description VARCHAR(255)
+);
+
+INSERT INTO shop (shop_name, shop_description)
+    values ('Евроопт', null),
+           ('Гиппо', null),
+            ('Виталюр', null),
+            ('Белмаркет', null),
+            ('Макдональдс', null);
