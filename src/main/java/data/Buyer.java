@@ -49,8 +49,8 @@ public class Buyer {
     private String credit_card;
     @Column(name = "bank_account", length = 34)
     private String bank_account;
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="shop_id")
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Shop.class)
+    @JoinColumn(name="shop", referencedColumnName = "id")
     private Shop shop;
 
     public Buyer() {
@@ -215,14 +215,14 @@ public class Buyer {
     public void setBank_account(String bank_account) {
         this.bank_account = bank_account;
     }
-
-    public Shop getShop() {
+/*
+    public data.Shop getShop() {
         return shop;
     }
 
-    public void setShops(Shop shop) {
+    public void setShops(data.Shop shop) {
         this.shop = shop;
-    }
+    }*/
 
     @Override
     public String toString() {
