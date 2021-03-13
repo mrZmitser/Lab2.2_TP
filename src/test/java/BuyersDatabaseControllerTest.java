@@ -112,7 +112,7 @@ class BuyersDatabaseControllerTest {
         BuyersDatabaseController dbController = connect();
         var formatter = new QueriesResultFormatter(16, "|", '*');
 
-        System.out.println("Add Shop column");
+        System.out.println("Add data.Shop column");
         try {
             dbController.addShopIdColumn();
             printStrings(dbController.getFullTable());
