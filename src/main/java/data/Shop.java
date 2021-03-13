@@ -15,7 +15,7 @@ public class Shop {
     @Column(name = "shop_description")
     private String shop_description;
     @OneToMany(targetEntity=Buyer.class)
-    private Set buyers = new HashSet();
+    private Set<Buyer> buyers = new HashSet<>();
 
     public Shop() {
     }
