@@ -223,32 +223,5 @@ public class Buyer {
     public void setShops(Shop shop) {
         this.shop = shop;
     }
-
-    @Override
-    public String toString() {
-        return "Buyer{" +
-                "id=" + id +
-                ", surname='" + surname + '\'' +
-                ", name='" + name + '\'' +
-                ", patronymic='" + patronymic + '\'' +
-                ", gender='" + gender + '\'' +
-                ", nation='" + nation + '\'' +
-                ", height=" + height +
-                ", weight=" + weight +
-                ", birthday=" + birthday +
-                ", phone_number='" + phone_number + '\'' +
-                ", post_code='" + post_code + '\'' +
-                ", country='" + country + '\'' +
-                ", region='" + region + '\'' +
-                ", district='" + district + '\'' +
-                ", city='" + city + '\'' +
-                ", street='" + street + '\'' +
-                ", building='" + building + '\'' +
-                ", flat=" + flat +
-                ", credit_card='" + credit_card + '\'' +
-                ", bank_account='" + bank_account + '\'' +
-                ", shop=" + shop +
-                '}';
-    }
 }
 

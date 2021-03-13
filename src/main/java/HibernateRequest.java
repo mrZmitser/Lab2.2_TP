@@ -1,18 +1,24 @@
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
+import javax.persistence.TypedQuery;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class HibernateRequest {
+
+    private static Session session;
+
+    public HibernateRequest() {
+        session = HibernateUtil.getSessionFactory().openSession();
+    }
+
     public static List<Buyer> getBrestBuyers(String city) throws SQLException {
-        Session session = null;
-        List buyers = null;
+        List<Buyer> buyers = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            Query query = session.createQuery("SELECT b.surname FROM Buyer b WHERE b.city='" + city + "'");
-            buyers = query.list();
+            Query<Buyer> query = session.createQuery("FROM Buyer where city = '" + city + "'", Buyer.class);
+            buyers = query.getResultList();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -22,6 +28,7 @@ public class HibernateRequest {
         }
         return buyers;
     }
+
 
     public static Object countBuyersByHeight(Integer height) throws SQLException {
         Session session = null;
@@ -40,6 +47,7 @@ public class HibernateRequest {
         return buyers;
     }
 
+
     public static Object sumFemaleWeights() throws SQLException {
         Session session = null;
         Object buyers = null;
@@ -56,6 +64,7 @@ public class HibernateRequest {
         }
         return buyers;
     }
+
 
     public static List<Object> getMinMaxWeight() throws SQLException {
         Session session = null;
@@ -75,7 +84,9 @@ public class HibernateRequest {
         }
         return buyers;
     }
-    public static List getAllBuyers() throws SQLException {
+
+
+    public static List<Object> getAllBuyers() throws SQLException {
         Session session = null;
         List<Object> buyers = new ArrayList<>();
         try {
@@ -91,16 +102,16 @@ public class HibernateRequest {
         }
         return buyers;
     }
-    public static List getBuyersForShops() throws SQLException {
+
+
+    public static List<Buyer> getBuyersForShops() throws SQLException {
         Session session = null;
-        List<Object> buyers = new ArrayList<>();
+        List<Buyer> buyers = new ArrayList<>();
         try {
             session = HibernateUtil.getSessionFactory().openSession();
-            Query query = session.createQuery("SELECT buyers.id, surname, name, phone_number, credit_card, shop, " +
-                    "shop.shop_name FROM Buyer b INNER JOIN Shop s ON b.shop=s.id AND (s.id in 2");
+            Query<Buyer> query = session.createQuery("FROM Buyer b INNER JOIN Shop s ON b.shop=s.id AND (s.id in 2", Buyer.class);
             buyers.add(query.getSingleResult());
-            query = session.createQuery("SELECT buyers.id, surname, name, phone_number, credit_card, shop, " +
-                    "shop.shop_name FROM Buyer b INNER JOIN Shop s ON b.shop=s.id AND (s.id in 4");
+            query = session.createQuery("FROM Buyer b INNER JOIN Shop s ON b.shop=s.id AND (s.id in 4", Buyer.class);
             buyers.add(query.getSingleResult());
         } catch (Exception e) {
             e.printStackTrace();
@@ -111,7 +122,4 @@ public class HibernateRequest {
         }
         return buyers;
     }
-
-
-
 }
