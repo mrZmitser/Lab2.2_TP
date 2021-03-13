@@ -1,60 +1,106 @@
+import data.Buyer;
+import data.Shop;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.text.ParseException;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class QueriesResultFormatter {
-    private final char charToFill;
-    private final int columnWidth;
-    private final String columnSeparator;
+    private final BuyersDao dao;
 
-    public QueriesResultFormatter(int columnWidth, String columnSeparator, char charToFill) {
-        this.columnWidth = columnWidth;
-        this.charToFill = charToFill;
-        this.columnSeparator = columnSeparator;
+    public QueriesResultFormatter(BuyersDao dao) {
+        this.dao = dao;
     }
 
-    public String[] resultToStringArray(ResultSet result) throws SQLException {
-        ArrayList<String> strings = new ArrayList<>();
-        var header = getHeader(result);
-        strings.add(header);
-        strings.add(fillingString(header.length()));
+    public Buyer[] resultToBuyerArray(ResultSet result) throws SQLException {
+        ArrayList<Buyer> buyers = new ArrayList<>();
         while (result.next()) {
-            strings.add(resultRowToString(result));
+            buyers.add(resultRowToBuyer(result));
         }
-        return strings.toArray(new String[0]);
+        return buyers.toArray(new Buyer[0]);
     }
 
-    public String fillingString(int length) {
+    public static String fillingString(int length, char charToFill) {
         return Stream.generate(() -> String.valueOf(charToFill)).limit(length).collect(Collectors.joining());
     }
 
-    public String getHeader(ResultSet result) throws SQLException {
-        var headerRow = new StringBuilder();
-        for (int i = 1; i <= result.getMetaData().getColumnCount(); ++i) {
-            headerRow.append(String.format("%1$" + columnWidth + "s",
-                    result.getMetaData().getColumnName(i))).append(columnSeparator);
+    public Buyer resultRowToBuyer(ResultSet result) throws SQLException {
+        Buyer buyer = new Buyer();
+
+        for (int i = 1; i <= result.getMetaData().getColumnCount(); i++) {
+            var fieldName = result.getMetaData().getColumnName(i);
+            try {
+                String setterName = "set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+                Method setter = getMethodLike(Buyer.class, setterName);
+                setField(buyer, setter,  setter.getParameterTypes()[0], result, i);
+            } catch (IllegalAccessException | ParseException | InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException ignored) {
+            }
         }
-        return headerRow.toString();
+        return buyer;
     }
 
-    public String resultRowToString(ResultSet result) throws SQLException {
-        StringBuilder row = new StringBuilder();
-        for (int i = 1; i <= result.getMetaData().getColumnCount(); i++) {
-            row.append(String.format("%1$" + columnWidth + "s",
-                    result.getString(i))).append(columnSeparator);
+    private static Method getMethodLike(Class<?> fromClass, String name) throws NoSuchMethodException {
+        final Optional<Method> matchedMethod = Arrays.stream(fromClass.getMethods()).filter(method ->
+                method.getName().toLowerCase().contains(name.toLowerCase())).findAny();
+        if (matchedMethod.isEmpty()) {
+            throw new NoSuchMethodException("No method containing: " + name);
         }
-        return row.toString();
+        return matchedMethod.get();
+    }
+
+    private void setField(Object object, Method setter, Type fieldType, ResultSet result, int index)
+            throws ParseException, SQLException, InvocationTargetException, IllegalAccessException {
+        try {
+            if (fieldType == Integer.class || fieldType == int.class) {
+                setter.invoke(object, result.getInt(index));
+            } else if (fieldType == Long.class) {
+                setter.invoke(object, result.getLong(index));
+            } else if (fieldType == Date.class) {
+                setter.invoke(object, result.getDate(index));
+            } else if (fieldType == Shop.class) {
+                var shop = dao.getShop(result.getInt(index));
+                shop.getBuyers().add(object);
+                setter.invoke(object, shop);
+            } else {
+                setter.invoke(object, result.getString(index));
+            }
+        } catch (IllegalArgumentException e){
+            System.out.println(object.getClass() + " " + setter.getName());
+        }
     }
 
     public String intArrayToString(int[] shopIds) {
         StringBuilder builder = new StringBuilder();
         builder.append("(").append(shopIds[0]);
-        for (int  i = 1; i < shopIds.length; ++i){
+        for (int i = 1; i < shopIds.length; ++i) {
             builder.append(", ").append(shopIds[i]);
         }
         builder.append(")");
         return builder.toString();
+    }
+
+    public Shop resultToShop(ResultSet result) throws SQLException {
+        Shop shop = new Shop();
+
+        for (int i = 1; i <= result.getMetaData().getColumnCount(); i++) {
+            var fieldName = result.getMetaData().getColumnName(i);
+            try {
+                String setterName = "set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+                Method setter = getMethodLike(Shop.class, setterName);
+                setField(shop, setter, setter.getParameterTypes()[0], result, i);
+            } catch (IllegalAccessException | ParseException | InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException ignored) {
+            }
+        }
+        return shop;
     }
 }
