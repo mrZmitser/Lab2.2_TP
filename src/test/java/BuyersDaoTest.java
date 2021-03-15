@@ -10,7 +10,6 @@ class BuyersDaoTest {
     final static String DB_URL = "jdbc:postgresql://localhost:5432/postgres";
     final static String DB_USER_LOGIN = "postgres";
     final static String DB_USER_PASSWORD = "password";
-
     @BeforeAll
     public static void migrate() {
         Flyway flyway = Flyway.configure().dataSource(DB_URL, DB_USER_LOGIN, DB_USER_PASSWORD)
